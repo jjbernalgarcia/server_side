@@ -1,0 +1,42 @@
+const sendHttpGet = require('sendHttpGet');
+const logToConsole = require('logToConsole');
+const encodeUriComponent = require('encodeUriComponent');
+// Main tag code
+const baseUrl = 'https://pokeapi.co/api/v2/pokemon/ditto';
+const staticParams = 'staticParameter=test&staticParameter2=test2';
+const buildUrl = function() {
+  const parameter1 = encodeUriComponent(data.parameter1);
+  const parameter2 = encodeUriComponent(data.parameter2);
+  const parameter3 = encodeUriComponent(data.parameter3);
+
+  let url = baseUrl + '?parameter1=' + parameter1 + 
+                   '&parameter2=' + parameter2 + 
+                   '&parameter3=' + parameter3;
+  return url;
+};
+const onSuccess = function() {
+  data.gtmOnSuccess();
+};
+const onFailure = function() {
+  data.gtmOnFailure();
+};
+const url = buildUrl();
+logToConsole('Sending request to URL:', url);
+sendHttpGet(url)
+  .then(function(response) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      logToConsole('HTTP GET request successful');
+      logToConsole('Response status code:', response.statusCode);
+      logToConsole('Response body:', response.body);
+      onSuccess();
+    } else {
+      logToConsole('HTTP GET request failed');
+      logToConsole('Response status code:', response.statusCode);
+      logToConsole('Response body:', response.body);
+      onFailure();
+    }
+  })
+  .catch(function(error) {
+    logToConsole('Error sending HTTP GET request:', error);
+    onFailure();
+  });
