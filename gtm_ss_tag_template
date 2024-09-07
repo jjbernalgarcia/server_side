@@ -1,27 +1,35 @@
 const sendHttpGet = require('sendHttpGet');
 const logToConsole = require('logToConsole');
 const encodeUriComponent = require('encodeUriComponent');
+
 // Main tag code
-const baseUrl = 'https://pokeapi.co/api/v2/pokemon/ditto';
+const baseUrl = 'https://affiliate-marketing.com';
 const staticParams = 'staticParameter=test&staticParameter2=test2';
+
 const buildUrl = function() {
   const parameter1 = encodeUriComponent(data.parameter1);
   const parameter2 = encodeUriComponent(data.parameter2);
   const parameter3 = encodeUriComponent(data.parameter3);
-
-  let url = baseUrl + '?parameter1=' + parameter1 + 
-                   '&parameter2=' + parameter2 + 
-                   '&parameter3=' + parameter3;
+  
+  let url = baseUrl + '?parameter1=' + parameter1 + '&parameter2=' + parameter2 + '&parameter3=' + parameter3;
+  
+  // Add static parameters to the URL
+  url += '&' + staticParams;
+  
   return url;
 };
+
 const onSuccess = function() {
   data.gtmOnSuccess();
 };
+
 const onFailure = function() {
   data.gtmOnFailure();
 };
+
 const url = buildUrl();
 logToConsole('Sending request to URL:', url);
+
 sendHttpGet(url)
   .then(function(response) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
